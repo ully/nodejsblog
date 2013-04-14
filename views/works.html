@@ -1,0 +1,11 @@
+<div id="main" >
+<%if(worksset.length>0){%>
+<%for(var i=0;i<worksset.length;i++){
+	var works = worksset[i];
+%>
+<div class="blog_list"><%=(i+1)%>.<%=works.title%><a href="/blog/<%=works.id%>">>></a></div>
+<%}%>
+<%}else {%>
+<div> no works.</div>
+<%}%>
+</div>

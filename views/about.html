@@ -1,0 +1,110 @@
+
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript">
+  var map;
+  var geocoder;
+  var centerChangedLast = new Date();
+  var reverseGeocodedLast;
+  var currentReverseGeocodeResponse;
+
+  function initialize() {
+    var latlng = new google.maps.LatLng(40.0736786,116.3487514);
+    var myOptions = {
+      zoom: 2,
+      center: latlng,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+    geocoder = new google.maps.Geocoder();
+    setupEvents();
+  	geocode();
+  }
+
+  function setupEvents() {
+    reverseGeocodedLast = new Date();
+    centerChangedLast = new Date();
+
+    setInterval(function() {
+      if((new Date()).getSeconds() - centerChangedLast.getSeconds() > 1) {
+        if(reverseGeocodedLast.getTime() < centerChangedLast.getTime())
+          reverseGeocode();
+      }
+    }, 1000);
+
+  	 google.maps.event.addListener(map, 'center_changed', centerChanged);
+  }
+
+
+
+  function centerChanged() {
+    centerChangedLast = new Date();
+  }
+
+  function reverseGeocode() {
+    reverseGeocodedLast = new Date();
+    geocoder.geocode({latLng:map.getCenter()},reverseGeocodeResult);
+  }
+
+  function reverseGeocodeResult(results, status) {
+    currentReverseGeocodeResponse = results;
+    if(status == 'OK') {
+      if(results.length == 0) {
+        document.getElementById('address').innerHTML = 'None';
+      } else {
+        document.getElementById('address').innerHTML = results[0].formatted_address;
+      }
+    } else {
+      document.getElementById('address').innerHTML = 'Error';
+    }
+  }
+
+
+
+	function geocode() {
+		navigator.geolocation.getCurrentPosition(function(position) {
+			s = position.coords.latitude + "," + position.coords.longitude;
+			geocoder.geocode({
+				'address' : s,
+				'partialmatch' : true
+			}, geocodeResult);
+		})
+
+	}
+
+	function geocodeResult(results, status) {
+		if (status == 'OK' && results.length > 0) {
+			map.fitBounds(results[0].geometry.viewport);
+			addMarkerAtCenter();
+		} else {
+			alert("Geocode was not successful for the following reason: "
+					+ status);
+		}
+	}
+
+	function addMarkerAtCenter() {
+		var marker = new google.maps.Marker({
+			position : map.getCenter(),
+			map : map
+		});
+	}
+
+	jQuery(function($) {
+		initialize();
+	});
+</script>
+<h2>About Me</h2>
+<ul>
+<li>êÇ³Æ:<%=userinfo.name%>
+</li>
+<li>½éÉÜ:<%=userinfo.intro%>
+</li>
+<li>contact:<%=userinfo.contact%>
+</li>
+</ul>
+
+<div class="ully_geo">
+ÄãÔÚÕâ¶ù£¬ÊÇÂğ:<span id="address">Unknown</span>.
+<div id="map_canvas" style="width: 500px; height: 300px"></div>
+<div id="crosshair"></div>
+</div>
+	

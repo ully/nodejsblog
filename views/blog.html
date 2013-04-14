@@ -1,0 +1,11 @@
+<div id="main" >
+<%if(blogs.length>0){%>
+<%for(var i=0;i<blogs.length;i++){
+	var blog = blogs[i];
+%>
+<div class="blog_list"><%=(i+1)%>.<%=blog.title%> <a href="/blog/<%=blog.id%>">>></a></div>
+<%}%>
+<%}else {%>
+<div> no blogs.</div>
+<%}%>
+</div>

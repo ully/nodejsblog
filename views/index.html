@@ -1,0 +1,33 @@
+<h3>Recent</h3>
+
+<p>
+<ul>
+ <% for(var i = 0; i < blogs.length; i++) {
+   var blog = blogs[i];
+   console.log(blog);
+  %>
+  <% if(blog.type == "recent") {%>
+	<li>
+        <%=blog.title %> <a href="/blog/<%=blog.id%>">>>></a>
+    </li>
+     <% } %>
+	<%}%>
+</ul>
+</p>
+<h2>Plan</h2>
+<p>
+<ul>
+ <% for(var i = 0; i < blogs.length; i++) {
+   var blog = blogs[i];
+   console.log(blog);
+  %>
+  <% if(blog.type == "plan") {%>
+	<li>
+        <%=blog.title %> <a href="/blog/<%=blog.id%>">>>></a>
+    </li>
+     <% } %>
+	<%}%>
+	
+</ul>
+</p>
+

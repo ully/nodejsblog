@@ -1,0 +1,59 @@
+
+<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false
+    &amp;key=ABQIAAAA8JXb0YDVa4otOLnM95w50BSeC_rwpfX9fQb-nbMGMDH8BB4BVRTjxWS14T5WLZf7TpXaaAtk_SIb-Q"
+    type="text/javascript">
+  </script>
+
+<script type="text/javascript">
+    var map;
+    var geocoder;
+
+    function initialize() {
+      map = new GMap2(document.getElementById("map_canvas"));
+      map.setCenter(new GLatLng(34, 0), 1);
+      geocoder = new GClientGeocoder();
+    }
+
+    function addAddressToMap(response) {
+      map.clearOverlays();
+      if (!response || response.Status.code != 200) {
+        alert("Sorry, we were unable to geocode that address");
+      } else {
+        place = response.Placemark[0];
+        point = new GLatLng(place.Point.coordinates[1],
+                            place.Point.coordinates[0]);
+        marker = new GMarker(point);
+        map.setCenter(point, 13);
+        map.addOverlay(marker);
+		var addr = document.getElementById('address');
+		addr.firstChild.data = place.address;
+      }
+    }
+
+
+if (navigator.geolocation) {
+   navigator.geolocation.getCurrentPosition(function(position) {  
+   s = position.coords.latitude+","+position.coords.longitude;
+   geocoder.getLocations(s, addAddressToMap);
+ }); 
+  
+} else {
+  alert("I'm sorry, but geolocation services are not supported by your browser.");
+}  
+
+jQuery(function($) {
+	initialize();
+});
+</script>
+<ul>
+<li>????ully
+</li>
+<li>?????i am a boy
+</li>
+<li>contact:
+</li>
+</ul>
+
+<div id="map_canvas" style="width: 500px; height: 300px"></div>
+Be careful,guys,I find you:<span id="address">Unknown</span>.
+	
